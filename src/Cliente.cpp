@@ -13,8 +13,8 @@
 #include <chrono>
 #include <condition_variable>
 #include <future>
-#include "../resources/MyLib.h"
-#include "../resources/Colors.h"
+#include "../include/MyLib.h"
+#include "../include/Colors.h"
 
 class Cliente
 {

@@ -13,8 +13,8 @@
 #include <chrono>
 #include <condition_variable>
 #include <future>
-#include "../resources/MyLib.h"
-#include "../resources/Colors.h"
+#include "../include/MyLib.h"
+#include "../include/Colors.h"
 
 class Reponedor
 {
@@ -22,7 +22,7 @@ public:
     void reponer()
     {
         std::cout << FBLU("[REPONEDOR]  REPONEDOR CREADO ") << std::endl;
-        while(true)
+        while(repone)
         {
             s_reponer.lock();
         	std::cout << FBLU("[REPONEDOR]  Reponiendo.... ") << std::endl;

@@ -12,13 +12,13 @@
 #include <chrono>
 #include <condition_variable>
 #include <future>
-#include "../resources/MyLib.h"
+#include "../include/MyLib.h"
 #include "Taquilla.cpp"
 #include "SistemaDePago.cpp"
 #include "Reponedor.cpp"
 #include "Cliente.cpp"
 #include "PuntoVenta.cpp"
-#include "../resources/Colors.h"
+#include "../include/Colors.h"
 
 int main(){
     Taquilla * taq = new Taquilla();
@@ -28,14 +28,17 @@ int main(){
     Reponedor * repo = new Reponedor();
     
     //metodo main -- manager --
-    int NUM_CLIENTES = 10;
+    
     int PUESTOS_COMIDA = 3;
     s_manager.lock();
     s_solicitud_taquilla.lock();
     s_espera_tickets.lock();
     s_pago.lock();
     s_espera_pago.lock();
-    
+
+// Creamos la sala.
+    	
+	taq->ImprimirSala();
     
     //creamos una taquilla
     std::thread h_taquilla(&Taquilla::taquilla,taq);
@@ -72,7 +75,15 @@ int main(){
     }
     
     //espera a la finalización de hilos
-    h_taquilla.join();
+    	h_taquilla.join();/*
+        std::cout << FMAG("[MANAGER] A la espera a finalizar: ") << std::endl;
+	s_finalizar.lock();
+		std::cout << "Termina" << std::endl;
+		sistePago = false;
+		taqui = false;
+		puntoVent= false;
+		repone = false;
+	s_espera_finalizar.unlock();*/
     
     return EXIT_SUCCESS;
 }

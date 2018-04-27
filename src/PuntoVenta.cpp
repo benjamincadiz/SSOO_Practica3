@@ -13,18 +13,19 @@
 #include <chrono>
 #include <condition_variable>
 #include <future>
-#include "../resources/MyLib.h"
-#include "../resources/Colors.h"
+#include "../include/MyLib.h"
+#include "../include/Colors.h"
 
 class PuntoVenta
 {
 public:
      void puestoComida(int id_puesto){
+    Taquilla * taq = new Taquilla();
         std::cout << FRED("[PV]  Puesto de comida ") << id_puesto << FRED(" creado, esperando por clientes ...\n");
         
         std::unique_lock<std::mutex> lk (s_clientes_comida);
         
-        while(true){
+        while(puntoVent){
             cv_clientes_comida.wait(lk, []{return !cola_comida.empty();});
             s_mutex_comida.lock(); //acceso a cola de peticiones de comida en exclusión mutua
             //Se atiende petición de comida
@@ -57,12 +58,15 @@ public:
             
             //manda notificación a cliente
             std::cout << FRED("[PV]  Puesto de venta ") << id_puesto << FRED(" Termina de atender al cliente  ") << mpc->id_cliente << "\n";
-            //mpc.b_atendido = true;
             cola_atendidos.push(move(cliente));
             mpc->b_atendido = true;
             cv_comida_atendida.notify_all();
-            
+	    if ( mpc->id_cliente == NUM_CLIENTES)
+	   {
+		taq->ImprimirSala();
+            }else{
             lk.lock(); //se prepara semáforo para nuevo posible bloqueo con wait en siguiente iteracion
+		}
         }
     }
 };

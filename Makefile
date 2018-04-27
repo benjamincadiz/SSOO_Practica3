@@ -14,7 +14,7 @@ CINE: dirs
 
 all: CINE
 
-test: CINE
+run: CINE
 	$(RUN)$(DIREXEC)CINE
 
 clean:
